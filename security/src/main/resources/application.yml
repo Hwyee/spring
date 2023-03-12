@@ -1,0 +1,7 @@
+server:
+  port: 443
+  ssl:
+    key-store: classpath:9152656_hwyee.cn.pfx
+    key-store-password: j2wwqpys
+    key-store-type: PKCS12
+    key-alias: alias
