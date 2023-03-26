@@ -350,6 +350,20 @@ public class alTest {
         D4 d4 = new D4();
         int search = d4.search(a, 8);
         System.out.println(search);
+        //异或解法：n-1 = 3 n =4
+        int a1 = 0;
+        int a2 = 1;
+        int a3 = 2;
+        int a4 = 4;
+        System.out.println("0 ^ 1 :"+(0^1));
+        System.out.println("1 ^ 2 :"+(1^2));
+        System.out.println("3 ^ 4 :"+(3^4));
+        System.out.println("**************");
+        System.out.println("7 ^ 0 :"+(0^7));
+        System.out.println("7 ^ 1 :"+(7^1));
+        System.out.println("1 ^ 2 :"+(6^2));
+        System.out.println("4 ^ 3 :"+(4^3));
+        System.out.println("7 ^ 4 :"+(7^4));
     }
 
 }
@@ -537,10 +551,10 @@ class D4 {
         int n = nums.length;
         int a = 0;
         for (int i = 0; i < nums.length; i++) {
-            if (nums[i] == i++);
-                i++;
+            if (nums[i] != i++)
+                return i;
         }
-        return 0;
+        return n-1;
     }
 
 }
