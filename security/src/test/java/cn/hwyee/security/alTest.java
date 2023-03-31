@@ -8,11 +8,14 @@ import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.Stack;
@@ -346,7 +349,7 @@ public class alTest {
 
     @Test
     public void d4T() {
-        int[] a = new int[]{5,7,7,8,8,10};
+        int[] a = new int[]{5, 7, 7, 8, 8, 10};
         D4 d4 = new D4();
         int search = d4.search(a, 8);
         System.out.println(search);
@@ -355,15 +358,15 @@ public class alTest {
         int a2 = 1;
         int a3 = 2;
         int a4 = 4;
-        System.out.println("0 ^ 1 :"+(0^1));
-        System.out.println("1 ^ 2 :"+(1^2));
-        System.out.println("3 ^ 4 :"+(3^4));
+        System.out.println("0 ^ 1 :" + (0 ^ 1));
+        System.out.println("1 ^ 2 :" + (1 ^ 2));
+        System.out.println("3 ^ 4 :" + (3 ^ 4));
         System.out.println("**************");
-        System.out.println("7 ^ 0 :"+(0^7));
-        System.out.println("7 ^ 1 :"+(7^1));
-        System.out.println("1 ^ 2 :"+(6^2));
-        System.out.println("4 ^ 3 :"+(4^3));
-        System.out.println("7 ^ 4 :"+(7^4));
+        System.out.println("7 ^ 0 :" + (0 ^ 7));
+        System.out.println("7 ^ 1 :" + (7 ^ 1));
+        System.out.println("1 ^ 2 :" + (6 ^ 2));
+        System.out.println("4 ^ 3 :" + (4 ^ 3));
+        System.out.println("7 ^ 4 :" + (7 ^ 4));
     }
 
 }
@@ -510,19 +513,20 @@ class D4 {
         int start = -1;
         int end = -1;
         for (int i = 0; i < nums.length; i++) {
-            if (start != -1 && end !=-1){
+            if (start != -1 && end != -1) {
                 break;
             }
             if (nums[i] == target && start == -1) {
                 start = i;
             }
             if (nums[nums.length - i - 1] == target && end == -1) {
-                end = nums.length - i ;
+                end = nums.length - i;
             }
         }
         if (start == -1 || end == -1) return 0;
         return end - start + 1;
     }
+
     public int search1(int[] nums, int target) {
         int leftIdx = binarySearch(nums, target, true);
         int rightIdx = binarySearch(nums, target, false) - 1;
@@ -545,6 +549,7 @@ class D4 {
         }
         return ans;
     }
+
     //一个长度为n-1的递增排序数组中的所有数字都是唯一的，并且每个数字都在范围0～n-1之内。
     // 在范围0～n-1内的n个数字中有且只有一个数字不在该数组中，请找出这个数字。
     public int missingNumber(int[] nums) {
@@ -554,27 +559,28 @@ class D4 {
             if (nums[i] != i++)
                 return i;
         }
-        return n-1;
+        return n - 1;
     }
 
 }
-class D5{
+
+class D5 {
     //在一个 n * m 的二维数组中，每一行都按照从左到右非递减的顺序排序，
     // 每一列都按照从上到下非递减的顺序排序。请完成一个高效的函数，输入这样的一个二维数组和一个整数，判断数组中是否含有该整数。
     public boolean findNumberIn2DArray(int[][] matrix, int target) {
-        if (matrix==null || matrix.length==0 || matrix[0].length==0) return false;
+        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) return false;
         int m = matrix[0].length;
         int n = matrix.length;
         int a = 0;
         for (int i = 0; i < matrix.length; i++) {
-            if (matrix[i][m-1] >= target){
+            if (matrix[i][m - 1] >= target) {
                 a = i;
                 break;
             }
         }
-        while (a<matrix.length && matrix[a][0] <= target ){
+        while (a < matrix.length && matrix[a][0] <= target) {
             for (int i = 0; i < m; i++) {
-                if (matrix[a][i] == target){
+                if (matrix[a][i] == target) {
                     return true;
                 }
             }
@@ -591,31 +597,67 @@ class D5{
     //
     //注意，数组 [a[0], a[1], a[2], ..., a[n-1]] 旋转一次 的结果为数组 [a[n-1], a[0], a[1], a[2], ..., a[n-2]] 。
     public int minArray(int[] numbers) {
-        if (numbers[numbers.length-1]>numbers[0]){
+        if (numbers[numbers.length - 1] > numbers[0]) {
             return numbers[0];
         }
         int start = 0;
-        int end = numbers.length - 1 ;
+        int end = numbers.length - 1;
         int mid = 0;
-        while (start<end){
-            mid = start +  (end - start)/2;// 等同于(start + start) / 2,为了防止int溢出,所以不用这种写法。
-            if (numbers[mid] < numbers[end]){
+        while (start < end) {
+            mid = start + (end - start) / 2;// 等同于(start + start) / 2,为了防止int溢出,所以不用这种写法。
+            if (numbers[mid] < numbers[end]) {
                 end = mid;
-            } else if (numbers[mid] > numbers[end]){
-                start = mid+1;
-            }
-            else {
-                end -=1;
+            } else if (numbers[mid] > numbers[end]) {
+                start = mid + 1;
+            } else {
+                end -= 1;
             }
         }
         return numbers[start];
     }
+
     //在字符串 s 中找出第一个只出现一次的字符。如果没有，返回一个单空格。 s 只包含小写字母。
     public char firstUniqChar(String s) {
-
-        return 1;
+        char[] chars = s.toCharArray();
+        for (char aChar : chars) {
+            if (s.indexOf(aChar) == s.lastIndexOf(aChar)) {
+                return aChar;
+            }
+        }
+        return ' ';
     }
 
+}
+
+class D6 {
+    //从上到下打印出二叉树的每个节点，同一层的节点按照从左到右的顺序打印。广度优先搜索（BFS）
+    public int[] levelOrder(TreeNode root) {
+        if(root == null) return new int[0];
+        Queue<TreeNode> queue = new LinkedList<>(){
+            { add(root); }
+        };
+        ArrayList<Integer> ans = new ArrayList<>();
+        while(!queue.isEmpty()) {
+            TreeNode node = queue.poll();
+            ans.add(node.val);
+            if(node.left != null) queue.add(node.left);
+            if(node.right != null) queue.add(node.right);
+        }
+        int[] res = new int[ans.size()];
+        for(int i = 0; i < ans.size(); i++)
+            res[i] = ans.get(i);
+        return res;
+    }
+}
+
+class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+
+    TreeNode(int x) {
+        val = x;
+    }
 }
 
 class ListNode {
