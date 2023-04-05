@@ -1,5 +1,7 @@
 package cn.hwyee.common.service;
 
+import cn.hwyee.common.pojo.CommandPrototype;
+
 /**
  * @author hui
  * @version 1.0
@@ -9,5 +11,5 @@ package cn.hwyee.common.service;
  * @since JDK 1.8
  */
 public interface LookupAnnotationService {
-    public String test();
+    public CommandPrototype test();
 }

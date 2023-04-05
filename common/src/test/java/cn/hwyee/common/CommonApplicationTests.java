@@ -11,15 +11,20 @@ class CommonApplicationTests {
 //    @Resource
 //    private LookupAnnotationServiceImpl lookupAnnotationService;
     @Test
-    void contextLoads() {
+    void lookup() {
 
         AnnotationConfigApplicationContext applicationContext1 =
                 new AnnotationConfigApplicationContext(CommonApplication.class);
         AnnotationConfigApplicationContext applicationContext2 =
                 new AnnotationConfigApplicationContext(CommonApplication.class);
         Object lookupAnnotationService =
-                applicationContext1.getBean("lookupAnnotationServiceImpl");
-        System.out.println(lookupAnnotationService);
+                 applicationContext1.getBean("lookupAnnotationService");
+        Object lookupAnnotationService1 =
+                 applicationContext1.getBean("scopedTarget.lookupAnnotationService");
+        System.out.println(lookupAnnotationService.toString());
+        System.out.println(lookupAnnotationService.getClass());
+        System.out.println(lookupAnnotationService1);
+        System.out.println(lookupAnnotationService1.getClass());
         LookupAnnotationService lookupAnnotationService0 =
                 applicationContext1.getBean("lookupAnnotationService", LookupAnnotationService.class);
         System.out.println(lookupAnnotationService0);
