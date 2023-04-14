@@ -1,0 +1,9 @@
+async:
+  pool:
+    core-size: 5
+    max-size: 50
+    keep-alive: 60
+    queue-capacity: 100
+logging:
+  level:
+    cn.hwyee: debug
