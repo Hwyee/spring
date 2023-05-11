@@ -3,11 +3,13 @@ package cn.hwyee.common;
 import cn.hwyee.common.pojo.MovieCatalog;
 import cn.hwyee.common.service.LookupAnnotationService;
 import cn.hwyee.common.service.impl.LookupAnnotationServiceImpl;
+import cn.hwyee.common.util.SnowFlakeUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.stereotype.Component;
 
 import java.util.stream.Stream;
 
@@ -70,6 +72,12 @@ class CommonApplicationTests {
             System.out.printf("beanName : %s ---> beanType %s \n",t,type.getName());
             System.out.println(context.getBean(t));
         });
+    }
+
+    @Test
+    void snowFlake() throws InterruptedException {
+        SnowFlakeUtil snowFlakeUtil = new SnowFlakeUtil();
+        System.out.println(snowFlakeUtil.generateKey());
     }
 
 }
