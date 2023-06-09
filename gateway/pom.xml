@@ -20,6 +20,7 @@
             <groupId>cn.hwyee</groupId>
             <artifactId>common</artifactId>
             <version>0.0.1-SNAPSHOT</version>
+
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-gateway -->
         <dependency>

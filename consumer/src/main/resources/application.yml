@@ -5,3 +5,9 @@ spring:
     host: hwyee.cn
     username: admin
     password: admin
+  application:
+    name: consumer
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 123.249.36.245:8848

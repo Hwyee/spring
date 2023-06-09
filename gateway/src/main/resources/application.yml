@@ -1,2 +1,27 @@
 server:
   port: 80
+spring:
+  cloud:
+    nacos:
+      server-addr: 123.249.36.245:8848
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: consumer
+          uri: lb://consumer
+          predicates:
+          - Path=/**
+
+  main:
+    web-application-type: reactive
+  application:
+    name: gateway
+#logging:
+#  level:
+#    root: debug
+#    web: debug
+
+
+
