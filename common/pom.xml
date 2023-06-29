@@ -43,16 +43,18 @@
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+            <version>2022.0.0.0-RC2</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <version>1.18.24</version>
         </dependency>
 <!--        阿里的ThreadLocal增强工具,可以使线程池复用也可以使用InheritedThreadLocal-->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>transmittable-thread-local</artifactId>
-            <version>${transmittable-thread-local.version}</version>
+            <version>2.14.2</version>
         </dependency>
 <!--        打包代码时自动生成spring-configuration-metadata.json,这样在yml里可以直接跳转到自定义的配置类-->
         <dependency>

@@ -6,8 +6,9 @@ spring:
     username: admin
     password: admin
   application:
-    name: consumer
+    name: spring-consumer
   cloud:
     nacos:
       discovery:
         server-addr: 123.249.36.245:8848
+        ip: 123.249.36.245
