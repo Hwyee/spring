@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
  * @version 1.0
  * @className SnowflakeProperties
  * @description 雪花算法自定义配置
+ * 因为是static属性，要自己重写set方法。
  * @date 2023/5/10
  * @since JDK 1.8
  */

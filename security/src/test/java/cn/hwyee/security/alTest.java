@@ -633,7 +633,7 @@ class D6 {
     //从上到下打印出二叉树的每个节点，同一层的节点按照从左到右的顺序打印。广度优先搜索（BFS）
     public int[] levelOrder(TreeNode root) {
         if(root == null) return new int[0];
-        Queue<TreeNode> queue = new LinkedList<>(){
+        Queue<TreeNode> queue = new LinkedList(){
             { add(root); }
         };
         ArrayList<Integer> ans = new ArrayList<>();
