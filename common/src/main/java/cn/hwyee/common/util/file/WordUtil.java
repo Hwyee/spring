@@ -33,63 +33,72 @@ public class WordUtil {
     public static final String DATE = "&日期&";
     public static String testpath = "./config/authfiletemplete/授权书.docx";
     public static String testoutpath = "./config/authfiletemplete/授权书temp.docx";
-    public static String testimg = "./config/testimg.png";
+    public static String testimg = "./config/zhangsan.png";
     public static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     public static void main(String[] args) {
         insertImg();
     }
     public static void insertImg()  {
-        int width = 20;
-        int height = 10;
+        int width = 60;
+        int height = 20;
         OPCPackage opcPackage = null;
         XWPFDocument document = null;
         FileInputStream fileInputStream = null;
         FileOutputStream out = null;
+        //不能使用 try-resource-cache因为opcPackage的关闭需使用revert();
+//        try (OPCPackage opcPackage=POIXMLDocument.openPackage(testpath);
+//             XWPFDocument document = new XWPFDocument(opcPackage);
+//             FileInputStream fileInputStream = new FileInputStream(testimg);
+//             FileOutputStream out = new FileOutputStream(testoutpath);){
         try {
+            //打开word文档
             opcPackage = POIXMLDocument.openPackage(testpath);
             document = new XWPFDocument(opcPackage);
             List<XWPFParagraph> paragraphs = document.getParagraphs();
             XWPFRun finalRun = null;
+            //寻找标记文本段落
             for (XWPFParagraph xwpfParagraph : paragraphs) {
                 if (!"".equals(xwpfParagraph.getText()) && xwpfParagraph.getText().contains(SIGN)) {
                     List<XWPFRun> runs = xwpfParagraph.getRuns();
                     log.info("runs size {}",runs.size());
                     log.info("top:{}", xwpfParagraph.getBorderTop());
+                    //每个段落由许多个XWPFRun组成,寻找标记文本的Run。
                     for (XWPFRun run : runs) {
                         String text = run.getText(0);
                         if (text == null){
                             continue;
                         }
                         if (text.contains(SIGN)){
+                            //替换图片标记文本为空
                             run.setText("",0);
                             finalRun = run;
                         }else if (text.contains(DATE)){
+                            //替换时间标记文本为当前时间
                             run.setText(dateTimeFormatter.format(LocalDate.now()),0);
                         }
                     }
                 }
             }
+            //插入图片
             if (finalRun != null) {
                 fileInputStream = new FileInputStream(testimg);
                 finalRun.addPicture(fileInputStream, Document.PICTURE_TYPE_PNG, "testimg",
                         Units.toEMU(width), Units.toEMU(height));
                 CTDrawing drawingArray = finalRun.getCTR().getDrawingArray(0);
                 CTGraphicalObject graphic = drawingArray.getInlineArray(0).getGraphic();
-
                 //拿到新插入的图片替换添加CTAnchor 设置浮动属性 删除inline属性
                 CTAnchor anchor = getAnchorWithGraphic(graphic, "testimg",
                         //图片大小
                         Units.toEMU(width), Units.toEMU(height),
                         //相对当前段落位置 需要计算段落已有内容的左偏移
-                        Units.toEMU(50), Units.toEMU(200), false);
-                //添加浮动属性
+                        Units.toEMU(30), Units.toEMU(0), false);
+                //图片的定位属性就两种 行内和锚
+                //添加浮动(锚)属性
                 drawingArray.setAnchorArray(new CTAnchor[]{anchor});
-                //删除行内属性
+                //删除行内属性,这个会占用文本位置,所以不用
                 drawingArray.removeInline(0);
-
             }
             out = new FileOutputStream(testoutpath);
-
             document.write(out);
 
         } catch (Exception e){
@@ -97,25 +106,31 @@ public class WordUtil {
         }finally {
             if (opcPackage != null){
                 try {
-                    //不能用opcPackage.close();因为如果文档是可写的,则关闭时会将改动写到源文件(模板文件)。
+                    //不能用opcPackage.close();因为如果源文档是可写的,则关闭时会将改动写到源文件(模板文件)。
                     opcPackage.revert();
                 }catch (Exception e){
-
+                    log.error("关闭word文档包失败:{}",e.getMessage(),e);
                 }
             }
-
+            if (document != null){
+                try {
+                    document.close();
+                }catch (Exception e){
+                    log.error("关闭word文档失败:{}",e.getMessage(),e);
+                }
+            }
             if (fileInputStream != null){
                 try {
                     fileInputStream.close();
                 } catch (Exception e){
-
+                    log.error("关闭图片输入流失败:{}",e.getMessage(),e);
                 }
             }
             if (out != null){
                 try {
                     out.close();
                 } catch (Exception e){
-
+                    log.error("关闭word输出流失败:{}",e.getMessage(),e);
                 }
             }
         }
