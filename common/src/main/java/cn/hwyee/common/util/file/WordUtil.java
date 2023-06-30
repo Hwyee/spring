@@ -1,6 +1,13 @@
 package cn.hwyee.common.util.file;
 
+import fr.opensagres.poi.xwpf.converter.pdf.PdfConverter;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.text.PDFTextStripper;
+import org.apache.pdfbox.util.Matrix;
 import org.apache.poi.ooxml.POIXMLDocument;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.util.Units;
@@ -35,9 +42,7 @@ public class WordUtil {
     public static String testoutpath = "./config/authfiletemplete/授权书temp.docx";
     public static String testimg = "./config/zhangsan.png";
     public static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    public static void main(String[] args) {
-        insertImg();
-    }
+
     public static void insertImg()  {
         int width = 60;
         int height = 20;
@@ -180,5 +185,108 @@ public class WordUtil {
         CTAnchor anchor = drawing.getAnchorArray(0);
         anchor.setGraphic(ctGraphicalObject);
         return anchor;
+    }
+
+    public static String pdf = "./config/word2pdf.pdf";
+    public static void poiWord2PDF(){
+        OPCPackage opcPackage = null;
+        XWPFDocument document = null;
+        FileInputStream fileInputStream = null;
+        FileOutputStream out = null;
+        try {
+            //打开word文档
+            opcPackage = POIXMLDocument.openPackage(testpath);
+            document = new XWPFDocument(opcPackage);
+            out = new FileOutputStream(pdf);
+            //会报错,poi版本太高了
+//            PdfConverter.getInstance().convert(document, out, null);
+//            PDDocument pdf = new PDDocument();
+//
+//            PDPage page = new PDPage();
+//
+//            pdf.addPage(page);
+//
+//            PDPageContentStream contentStream = new PDPageContentStream(pdf, page);
+//
+//            PDFTextStripper pdfTextStripper = new PDFTextStripper();
+//
+//            pdfTextStripper.setSortByPosition(true);
+//
+//            LayoutResult layout = null;
+//
+//            float yMin = 0.0F;
+//
+//            try {
+//
+//                layout = new DocxToPDFConverter(document).layout();
+//
+//                yMin = layout.getPage().get(0).getyMin();
+//
+//                int pageNum = 1;
+//
+//                while(layout != null){
+//
+//                    PDPage pdfPage = new PDPage(PDRectangle.A4);
+//
+//                    pdf.addPage(pdfPage);
+//
+//                    contentStream = new PDPageContentStream(pdf, pdfPage);
+//
+//                    contentStream.beginText();
+//
+//                    float offsetX = 85.0F;
+//
+//                    for (PDFLine line : layout.getPage()) {
+//
+//                        contentStream.setTextMatrix(Matrix.getTranslateInstance(offsetX, 830 - line.getLineTop() - line.getLineHeight() - yMin));
+//
+//                        contentStream.showText(line.getLine());
+//
+//                        contentStream.setTextMatrix(Matrix.getTranslateInstance(0.0F, line.getLineSpacing()));
+//
+//                    }
+//
+//                    contentStream.endText();
+//
+//                    contentStream.close();
+//
+//                    ++pageNum;
+//
+//                    layout = layout.isLast() ? null : new DocxToPDFConverter(document, layout).layout();
+//
+//                }
+//
+//                pdf.save("word.pdf");
+//
+//            }finally{
+//
+//                pdf.close();
+//
+//            }
+        }catch (Exception ee){
+            if (opcPackage != null){
+                try {
+                    //不能用opcPackage.close();因为如果源文档是可写的,则关闭时会将改动写到源文件(模板文件)。
+                    opcPackage.revert();
+                }catch (Exception e){
+                    log.error("关闭word文档包失败:{}",e.getMessage(),e);
+                }
+            }
+            if (document != null){
+                try {
+                    document.close();
+                }catch (Exception e){
+                    log.error("关闭word文档失败:{}",e.getMessage(),e);
+                }
+            }
+        }
+    }
+
+
+
+
+    public static void main(String[] args) {
+//        insertImg();
+
     }
 }
