@@ -1,13 +1,9 @@
 package cn.hwyee.common.util.file;
 
-import fr.opensagres.poi.xwpf.converter.pdf.PdfConverter;
+import cn.hutool.core.codec.Base64Decoder;
+import cn.hutool.core.codec.Base64Encoder;
+import cn.hwyee.common.util.crypto.Base64Util;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.common.PDRectangle;
-import org.apache.pdfbox.text.PDFTextStripper;
-import org.apache.pdfbox.util.Matrix;
 import org.apache.poi.ooxml.POIXMLDocument;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.util.Units;
@@ -20,9 +16,15 @@ import org.openxmlformats.schemas.drawingml.x2006.main.CTGraphicalObject;
 import org.openxmlformats.schemas.drawingml.x2006.wordprocessingDrawing.CTAnchor;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTDrawing;
 
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -41,15 +43,17 @@ public class WordUtil {
     public static String testpath = "./config/authfiletemplete/授权书.docx";
     public static String testoutpath = "./config/authfiletemplete/授权书temp.docx";
     public static String testimg = "./config/zhangsan.png";
-    public static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    public static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    public static void insertImg()  {
-        int width = 60;
-        int height = 20;
+    public static final int DEFAULT_WIDTH = 60;
+    public static final int DEFAULT_HEIGHT = 20;
+    public static final int DEFAULT_LEFT = 30;
+    public static final int DEFAULT_TOP = 0;
+    public static String insertImg(String filePath, InputStream signImageStream,int width,
+                                 int height, int left,int top)  {
+
         OPCPackage opcPackage = null;
         XWPFDocument document = null;
-        FileInputStream fileInputStream = null;
-        FileOutputStream out = null;
         //不能使用 try-resource-cache因为opcPackage的关闭需使用revert();
 //        try (OPCPackage opcPackage=POIXMLDocument.openPackage(testpath);
 //             XWPFDocument document = new XWPFDocument(opcPackage);
@@ -57,7 +61,7 @@ public class WordUtil {
 //             FileOutputStream out = new FileOutputStream(testoutpath);){
         try {
             //打开word文档
-            opcPackage = POIXMLDocument.openPackage(testpath);
+            opcPackage = POIXMLDocument.openPackage(filePath);
             document = new XWPFDocument(opcPackage);
             List<XWPFParagraph> paragraphs = document.getParagraphs();
             XWPFRun finalRun = null;
@@ -79,15 +83,14 @@ public class WordUtil {
                             finalRun = run;
                         }else if (text.contains(DATE)){
                             //替换时间标记文本为当前时间
-                            run.setText(dateTimeFormatter.format(LocalDate.now()),0);
+                            run.setText(dateTimeFormatter.format(LocalDateTime.now()),0);
                         }
                     }
                 }
             }
             //插入图片
             if (finalRun != null) {
-                fileInputStream = new FileInputStream(testimg);
-                finalRun.addPicture(fileInputStream, Document.PICTURE_TYPE_PNG, "testimg",
+                finalRun.addPicture(signImageStream, Document.PICTURE_TYPE_PNG, "testimg",
                         Units.toEMU(width), Units.toEMU(height));
                 CTDrawing drawingArray = finalRun.getCTR().getDrawingArray(0);
                 CTGraphicalObject graphic = drawingArray.getInlineArray(0).getGraphic();
@@ -96,18 +99,18 @@ public class WordUtil {
                         //图片大小
                         Units.toEMU(width), Units.toEMU(height),
                         //相对当前段落位置 需要计算段落已有内容的左偏移
-                        Units.toEMU(30), Units.toEMU(0), false);
+                        Units.toEMU(left), Units.toEMU(top), false);
                 //图片的定位属性就两种 行内和锚
                 //添加浮动(锚)属性
                 drawingArray.setAnchorArray(new CTAnchor[]{anchor});
                 //删除行内属性,这个会占用文本位置,所以不用
                 drawingArray.removeInline(0);
             }
-            out = new FileOutputStream(testoutpath);
-            document.write(out);
+            return Base64Util.encode(document);
 
         } catch (Exception e){
             log.error(e.getMessage(),e);
+            return null;
         }finally {
             if (opcPackage != null){
                 try {
@@ -124,20 +127,14 @@ public class WordUtil {
                     log.error("关闭word文档失败:{}",e.getMessage(),e);
                 }
             }
-            if (fileInputStream != null){
+            if (signImageStream != null){
                 try {
-                    fileInputStream.close();
+                    signImageStream.close();
                 } catch (Exception e){
-                    log.error("关闭图片输入流失败:{}",e.getMessage(),e);
+                    log.error("关闭签名图片输入流失败:{}",e.getMessage(),e);
                 }
             }
-            if (out != null){
-                try {
-                    out.close();
-                } catch (Exception e){
-                    log.error("关闭word输出流失败:{}",e.getMessage(),e);
-                }
-            }
+
         }
 
 
@@ -285,8 +282,41 @@ public class WordUtil {
 
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception{
 //        insertImg();
+        //二进制流不能转为string，再转为byte，base64这样是错误的
+//        FileInputStream fileInputStream = new FileInputStream(testimg);
+//        byte[] bytes = new byte[1024];
+//        int len = 0;
+//        StringBuilder s = new StringBuilder();
+//        while (( len = fileInputStream.read(bytes,0,1024) )!= -1){
+//            s.append(new String(bytes,0,len));
+//        }
+//        System.out.println(Base64Encoder.encode(s.toString().getBytes(StandardCharsets.UTF_8)));
+        //应该是这样
+//        File file = new File(testimg);
+//        InputStream is = new FileInputStream(file);
+//        byte[] bytes = new byte[(int) file.length()];
+//        int offset = 0;
+//        int numRead = 0;
+//        while (offset < bytes.length && (numRead = is.read(bytes, offset, bytes.length - offset)) >= 0) {
+//            offset += numRead;
+//        }
+//        if (offset < bytes.length) {
+//            throw new IOException("Could not read file completely: " + file.getName());
+//        }
+//        is.close();
+//        System.out.println("File contents:");
+//        System.out.println(new String(bytes));
 
+        //test insertImg
+        FileInputStream fileInputStream = new FileInputStream(testimg);
+
+        String s = insertImg(testpath, fileInputStream, DEFAULT_WIDTH,DEFAULT_HEIGHT,
+                DEFAULT_LEFT, DEFAULT_TOP);
+        log.info("word:{}",s);
+        FileOutputStream fileOutputStream = new FileOutputStream(testoutpath);
+        fileOutputStream.write(Base64Decoder.decode(s));
+        fileOutputStream.close();
     }
 }
