@@ -3,6 +3,9 @@ package cn.hwyee.common.util.file;
 import cn.hutool.core.codec.Base64Decoder;
 import cn.hutool.core.codec.Base64Encoder;
 import cn.hwyee.common.util.crypto.Base64Util;
+import fr.opensagres.poi.xwpf.converter.xhtml.Base64EmbedImgManager;
+import fr.opensagres.poi.xwpf.converter.xhtml.XHTMLConverter;
+import fr.opensagres.poi.xwpf.converter.xhtml.XHTMLOptions;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ooxml.POIXMLDocument;
 import org.apache.poi.openxml4j.opc.OPCPackage;
@@ -16,6 +19,7 @@ import org.openxmlformats.schemas.drawingml.x2006.main.CTGraphicalObject;
 import org.openxmlformats.schemas.drawingml.x2006.wordprocessingDrawing.CTAnchor;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTDrawing;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -318,5 +322,34 @@ public class WordUtil {
         FileOutputStream fileOutputStream = new FileOutputStream(testoutpath);
         fileOutputStream.write(Base64Decoder.decode(s));
         fileOutputStream.close();
+    }
+
+
+    /**
+     * word2Html:
+     * word2html
+     * poi依赖4.1.2
+     * fr依赖2.0.2
+     * @author hui
+     * @version 1.0
+     * @param inputStream
+     * @return java.lang.String
+     * @date 2023/7/8 9:58
+     */
+    public static String word2Html(InputStream inputStream) throws Exception {
+        XWPFDocument document = new XWPFDocument(inputStream);
+        // 转换为 html
+        //解析XHTML配置
+        XHTMLOptions xhtmlOptions = XHTMLOptions.create();
+        // 将样式都写为内联样式，而不是写到style标签中 默认false
+        xhtmlOptions.setFragment(true);
+        xhtmlOptions.setIgnoreStylesIfUnused(false);
+        //图片用base64转化
+        xhtmlOptions.setImageManager(new Base64EmbedImgManager());
+        //将XWPFDocument转化成HTML
+        ByteArrayOutputStream outputtarget = new ByteArrayOutputStream();
+        XHTMLConverter.getInstance().convert(document, outputtarget, xhtmlOptions);
+        //转成字符串
+        return outputtarget.toString("utf-8");
     }
 }
