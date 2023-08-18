@@ -1,4 +1,4 @@
-package cn.hwyee.common.util;
+package cn.hwyee.common.util.crypto;
 
 import cn.hwyee.common.config.properties.SnowflakeProperties;
 import com.google.common.base.Preconditions;

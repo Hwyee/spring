@@ -1,4 +1,4 @@
-package cn.hwyee.common.util;
+package cn.hwyee.common.util.file;
 
 import com.alibaba.fastjson2.JSON;
 import com.qiniu.common.QiniuException;
