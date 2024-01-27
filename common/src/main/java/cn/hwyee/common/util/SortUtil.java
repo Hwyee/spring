@@ -15,7 +15,7 @@ import java.util.Arrays;
 @Slf4j
 public class SortUtil {
     public static void main(String[] args) {
-        int[] a = new int[]{4, 2, 8, 0, 5 ,111 , 0, 2, 7, 88};
+        int[] a = new int[]{2, 3, 8, 0, 5 ,111 , 0, 2, 88, 7};
         //1. 冒泡
 //        bubbleSort(a);
         //2. 快排
@@ -60,10 +60,10 @@ public class SortUtil {
         }
         //计算分界值索引
         int boundaryIndex = quickSortSwap(ints, start, end);
-        if ( boundaryIndex  <= end ){
+        if ( boundaryIndex  < end ){//这样写quickSort(ints,start,boundaryIndex );不用-1，因为前面排好序后boundaryIndex==0，会跳出循环
             //递归
-            quickSort(ints,start,boundaryIndex);
-            quickSort(ints,boundaryIndex + 1,end);
+            quickSort(ints,start,boundaryIndex );
+            quickSort(ints,boundaryIndex  +1 ,end);
         }
     }
 

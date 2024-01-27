@@ -31,6 +31,7 @@
         <module>sentinel</module>
         <module>sleuth</module>
         <module>webflow</module>
+        <module>reactor</module>
     </modules>
     <dependencyManagement>
         <dependencies>
