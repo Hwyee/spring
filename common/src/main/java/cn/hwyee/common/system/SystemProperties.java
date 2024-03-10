@@ -1,6 +1,7 @@
 package cn.hwyee.common.system;
 
 import cn.hwyee.common.config.zk.ZooKeeperProperties;
+import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +14,8 @@ import org.springframework.stereotype.Component;
  * @since JDK 1.8
  */
 @Component
-@ConfigurationProperties("system")
+@ConfigurationProperties(prefix = "system")
+@Data
 public class SystemProperties {
     /**
      * java.version：Java 运行时环境的版本。

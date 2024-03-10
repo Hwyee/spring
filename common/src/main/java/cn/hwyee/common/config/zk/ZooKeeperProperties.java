@@ -2,6 +2,8 @@ package cn.hwyee.common.config.zk;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 /**
@@ -16,7 +18,8 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix = "zookeeper")
 @Data
-public class ZooKeeperProperties {
+@Order(1)
+public class ZooKeeperProperties implements Ordered {
 
     /**
      * zk链接串 默认hwyee.cn:2182
@@ -29,6 +32,11 @@ public class ZooKeeperProperties {
      */
     public static Integer sessionTimeout = 2000;
 
+    /**
+     * 注册节点 默认/servers
+     */
+    public static String registerNode = "/servers";
+
     public void setConnectString(String connectString) {
         ZooKeeperProperties.connectString = connectString;
     }
@@ -37,4 +45,13 @@ public class ZooKeeperProperties {
         ZooKeeperProperties.sessionTimeout = sessionTimeout;
     }
 
+    public void setRegisterNode(String registerNode){
+        ZooKeeperProperties.registerNode = registerNode;
+    }
+
+
+    @Override
+    public int getOrder() {
+        return 1;
+    }
 }
