@@ -13,3 +13,4 @@ snowflake:
   max-tolerate-time-difference-milliseconds: 30
 zookeeper:
   connect-string: hwyee.cn:2182
+  session-timeout: 40000

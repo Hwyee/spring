@@ -33,6 +33,6 @@ public class CommonApplication implements CommandLineRunner {
     public void run(String... args) throws Exception {
         System.out.println(ZooKeeperProperties.connectString);
 //        zooKeeper.create("/java/java", "java".getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL_SEQUENTIAL);
-        zkDemo.watchNodeOnce();
+//        zkDemo.watchNodeOnce();
     }
 }
