@@ -12,4 +12,4 @@ snowflake:
   worker-id: 1023
   max-tolerate-time-difference-milliseconds: 30
 zookeeper:
-  connect-string: "hwyee.cn:2183"
+  connect-string: hwyee.cn:2182
