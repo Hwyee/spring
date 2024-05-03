@@ -6,6 +6,7 @@ import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.WatchedEvent;
 import org.apache.zookeeper.ZooKeeper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
@@ -29,6 +30,7 @@ import java.util.List;
 @Slf4j
 @Order(2)//并不能改变bean的加载优先级
 @DependsOn("zooKeeperProperties")//可以改变bean的加载优先级，让zooKeeperProperties先加载，便于读取配置。
+@ConditionalOnProperty(prefix = "zookeeper", name = "enabled", havingValue = "true")
 public class ZooKeeperConfig implements Ordered {
 
     public static void main(String[] args) {

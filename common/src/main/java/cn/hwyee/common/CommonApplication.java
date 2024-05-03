@@ -21,17 +21,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class CommonApplication implements CommandLineRunner {
     @Autowired
     private SnowflakeProperties snowflakeProperties;
-    @Autowired
-    private ZooKeeper zooKeeper;
-    @Autowired
-    private ZKDemo zkDemo;
+
     public static void main(String[] args) {
         SpringApplication.run(CommonApplication.class, args);
     }
 
     @Override
     public void run(String... args) throws Exception {
-        System.out.println(ZooKeeperProperties.connectString);
+        //System.out.println(ZooKeeperProperties.connectString);
 //        zooKeeper.create("/java/java", "java".getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL_SEQUENTIAL);
 //        zkDemo.watchNodeOnce();
     }

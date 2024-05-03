@@ -1,4 +1,4 @@
-package cn.hwyee.provider.service.impl;
+package cn.hwyee.provider.rabbitmq;
 
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +18,8 @@ import org.springframework.stereotype.Service;
 public class RabbitmqProviderService {
     @Resource
     private RabbitTemplate rabbitTemplate;
-    public void test(String queue,String msg) {
-        rabbitTemplate.convertAndSend(queue,msg);
+    public void test(String routeKey,String msg) {
+        rabbitTemplate.convertAndSend(routeKey,msg);
     }
+
 }

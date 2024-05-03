@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.ZooKeeper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.List;
  */
 @Component
 @Slf4j
+@ConditionalOnProperty(prefix = "zookeeper", name = "enabled", havingValue = "true")
 public class ZKDemo {
     @Autowired
     private ZooKeeper zooKeeper;
