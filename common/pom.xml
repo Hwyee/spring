@@ -14,6 +14,9 @@
     <description>Demo project for Spring Boot</description>
     <properties>
         <java.version>17</java.version>
+        <grpc.version>1.63.0</grpc.version>
+        <protobuf.version>3.25.1</protobuf.version>
+        <protoc.version>3.25.1</protoc.version>
     </properties>
     <packaging>jar</packaging>
     <dependencies>
@@ -58,38 +61,37 @@
 
 
         <!--        <dependency>-->
-<!--            <groupId>com.aspose</groupId>-->
-<!--            <artifactId>aspose-pdf</artifactId>-->
-<!--            <version>23.6</version>-->
-<!--        </dependency>-->
-
+        <!--            <groupId>com.aspose</groupId>-->
+        <!--            <artifactId>aspose-pdf</artifactId>-->
+        <!--            <version>23.6</version>-->
+        <!--        </dependency>-->
 
 
         <!--        <dependency>-->
-<!--            <groupId>fr.opensagres.xdocreport</groupId>-->
-<!--            <artifactId>xdocreport</artifactId>-->
-<!--            <version>2.0.4</version>-->
-<!--        </dependency>-->
+        <!--            <groupId>fr.opensagres.xdocreport</groupId>-->
+        <!--            <artifactId>xdocreport</artifactId>-->
+        <!--            <version>2.0.4</version>-->
+        <!--        </dependency>-->
 
         <!--xdocreport word2pdf-->
-<!--        <dependency>-->
-<!--            <groupId>fr.opensagres.xdocreport</groupId>-->
-<!--            <artifactId>fr.opensagres.odfdom.converter.pdf</artifactId>-->
-<!--            <version>2.0.4</version>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>fr.opensagres.xdocreport</groupId>-->
+        <!--            <artifactId>fr.opensagres.odfdom.converter.pdf</artifactId>-->
+        <!--            <version>2.0.4</version>-->
+        <!--        </dependency>-->
         <!-- word2pdf
          https://mvnrepository.com/artifact/fr.opensagres.xdocreport/org.apache.poi.xwpf.converter.pdf -->
-<!--        <dependency>-->
-<!--            <groupId>fr.opensagres.xdocreport</groupId>-->
-<!--            <artifactId>org.apache.poi.xwpf.converter.pdf</artifactId>-->
-<!--            <version>1.0.6</version>-->
-<!--            <exclusions>-->
-<!--                <exclusion>-->
-<!--                    <groupId>org.apache.xmlbeans</groupId>-->
-<!--                    <artifactId>xmlbeans</artifactId>-->
-<!--                </exclusion>-->
-<!--            </exclusions>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>fr.opensagres.xdocreport</groupId>-->
+        <!--            <artifactId>org.apache.poi.xwpf.converter.pdf</artifactId>-->
+        <!--            <version>1.0.6</version>-->
+        <!--            <exclusions>-->
+        <!--                <exclusion>-->
+        <!--                    <groupId>org.apache.xmlbeans</groupId>-->
+        <!--                    <artifactId>xmlbeans</artifactId>-->
+        <!--                </exclusion>-->
+        <!--            </exclusions>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>fr.opensagres.xdocreport</groupId>
             <artifactId>fr.opensagres.poi.xwpf.converter.xhtml</artifactId>
@@ -98,8 +100,8 @@
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
-<!--最新版本回合fr冲突
-   <version>5.2.3</version>-->
+            <!--最新版本回合fr冲突
+               <version>5.2.3</version>-->
             <version>4.1.2</version>
         </dependency>
         <dependency>
@@ -121,10 +123,10 @@
             <artifactId>junit-platform-launcher</artifactId>
             <scope>compile</scope>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>com.alibaba.cloud</groupId>-->
-<!--            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>com.alibaba.cloud</groupId>-->
+        <!--            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
@@ -135,13 +137,13 @@
             <artifactId>lombok</artifactId>
             <version>1.18.24</version>
         </dependency>
-<!--        阿里的ThreadLocal增强工具,可以使线程池复用也可以使用InheritedThreadLocal-->
+        <!--        阿里的ThreadLocal增强工具,可以使线程池复用也可以使用InheritedThreadLocal-->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>transmittable-thread-local</artifactId>
             <version>2.14.2</version>
         </dependency>
-<!--        打包代码时自动生成spring-configuration-metadata.json,这样在yml里可以直接跳转到自定义的配置类-->
+        <!--        打包代码时自动生成spring-configuration-metadata.json,这样在yml里可以直接跳转到自定义的配置类-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
@@ -160,13 +162,37 @@
         <dependency>
             <groupId>com.qiniu</groupId>
             <artifactId>qiniu-java-sdk</artifactId>
-<!--            这里的version指定了一个版本范围，每次更新pom.xml的时候会尝试去下载7.7.x版本中的最新版本，你可以手动指定一个固定的版本。-->
+            <!--            这里的version指定了一个版本范围，每次更新pom.xml的时候会尝试去下载7.7.x版本中的最新版本，你可以手动指定一个固定的版本。-->
             <version>[7.7.0, 7.10.99]</version>
         </dependency>
         <dependency>
             <groupId>com.alibaba.fastjson2</groupId>
             <artifactId>fastjson2</artifactId>
             <version>2.0.23</version>
+        </dependency>
+
+        <!--grpc-->
+        <dependency>
+            <groupId>io.grpc</groupId>
+            <artifactId>grpc-netty-shaded</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.grpc</groupId>
+            <artifactId>grpc-protobuf</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.grpc</groupId>
+            <artifactId>grpc-services</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.grpc</groupId>
+            <artifactId>grpc-stub</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java-util</artifactId>
+            <version>${protobuf.version}</version>
         </dependency>
     </dependencies>
 

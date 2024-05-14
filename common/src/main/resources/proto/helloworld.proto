@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "cn.hwyee.common.grpc"; //生成到common文件夹下
+option java_outer_classname = "HelloWorldProto";
+option objc_class_prefix = "HLW"; //Objective-C编译器选项，防止类名冲突
+
+package helloworld;
+
+// The greeting service definition.
+service Greeter {
+    // Sends a greeting
+    rpc SayHello (HelloRequest) returns (HelloReply) {}
+}
+
+// The request message containing the user's name.
+message HelloRequest {
+    string name = 1;
+}
+
+// The response message containing the greetings
+message HelloReply {
+    string message = 1;
+}
+
+//生成需要protoc命令和protoc-gen-grpc-java插件
+//手动执行：
+//protoc --java_out=common/src/main/java --grpc-java_out=common/src/main/java common/src/main/resources/proto/helloworld.proto
