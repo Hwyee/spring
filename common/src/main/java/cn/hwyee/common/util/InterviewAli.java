@@ -1,6 +1,5 @@
 package cn.hwyee.common.util;
 
-import java.math.BigInteger;
 
 import static cn.hwyee.common.util.CalcEnum.EIGHT;
 import static cn.hwyee.common.util.CalcEnum.FIVE;
