@@ -1,4 +1,4 @@
-package cn.hwyee.consumer.config.service.impl;
+package cn.hwyee.consumer.rabbitmq;
 
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;

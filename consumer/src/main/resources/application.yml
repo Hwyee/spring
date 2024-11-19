@@ -1,14 +1,22 @@
 server:
-  port: 9010
+  port: 9030
 spring:
   rabbitmq:
     host: hwyee.cn
     username: admin
     password: admin
+
   application:
     name: spring-consumer
+  kafka:
+    bootstrap-servers:
+      - 123.249.36.245:9093
+      - 123.249.36.245:9094
+      - 123.249.36.245:9095
   cloud:
     nacos:
       discovery:
         server-addr: 123.249.36.245:8848
         ip: 123.249.36.245
+        fail-fast: false
+        enabled: false

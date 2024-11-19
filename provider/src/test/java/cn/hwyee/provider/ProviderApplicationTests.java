@@ -1,7 +1,7 @@
 package cn.hwyee.provider;
 
 import cn.hwyee.provider.service.impl.AsyncThreadService;
-import cn.hwyee.provider.service.impl.RabbitmqProviderService;
+import cn.hwyee.provider.rabbitmq.RabbitmqProviderService;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
 @SpringBootTest
 class ProviderApplicationTests {
