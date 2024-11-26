@@ -26,7 +26,7 @@ public class SipServer {
         // Class.forName(getPathName() + ".javax.sip.SipStackImpl")
         sipFactory.setPathName("gov.nist");
         Properties properties = new Properties();
-        properties.setProperty("javax.sip.IP_ADDRESS", "hwyee");
+        properties.setProperty("javax.sip.IP_ADDRESS", "127.0.0.1");
         properties.setProperty("javax.sip.STACK_NAME", "hwyee");
         SipStack sipStack = sipFactory.createSipStack(properties);
         sipStack.createListeningPoint("127.0.0.1", 5060, "udp");
