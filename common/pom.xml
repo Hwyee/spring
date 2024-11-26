@@ -20,6 +20,26 @@
     </properties>
     <packaging>jar</packaging>
     <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.bytedeco/javacv -->
+        <dependency>
+            <groupId>org.bytedeco</groupId>
+            <artifactId>javacv</artifactId>
+            <version>1.5.11</version>
+        </dependency>
+        <!-- Additional dependencies required to use CUDA and cuDNN -->
+        <dependency>
+            <groupId>org.bytedeco</groupId>
+            <artifactId>opencv-platform-gpu</artifactId>
+            <version>4.10.0-1.5.11</version>
+        </dependency>
+
+        <!-- Optional GPL builds with (almost) everything enabled -->
+        <dependency>
+            <groupId>org.bytedeco</groupId>
+            <artifactId>ffmpeg-platform-gpl</artifactId>
+            <version>7.1-1.5.11</version>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/io.netty/netty-all -->
         <dependency>
             <groupId>io.netty</groupId>
@@ -34,6 +54,12 @@
             <artifactId>jain-sip-ri</artifactId>
             <version>1.3.0-91</version>
         </dependency>
+
+<!--    sip-ri已经包含了    <dependency>-->
+<!--            <groupId>javax.sip</groupId>-->
+<!--            <artifactId>jain-sip-api</artifactId>-->
+<!--            <version>1.2.1.4</version>-->
+<!--        </dependency>-->
 
         <!-- pdf 操作
         https://mvnrepository.com/artifact/org.apache.pdfbox/pdfbox -->
