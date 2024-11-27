@@ -8,11 +8,21 @@
         <version>0.0.1-SNAPSHOT</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
+    <packaging>war</packaging>
     <artifactId>security</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>security</name>
     <description>Demo project for Spring Boot</description>
     <dependencies>
+<!--用外部tomcat部署:
+        1.排除内嵌的tomcat
+        2.war包
+        3.继承SpringBootServletInitializer-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
         <dependency>
             <groupId>cn.hwyee</groupId>
             <artifactId>common</artifactId>
